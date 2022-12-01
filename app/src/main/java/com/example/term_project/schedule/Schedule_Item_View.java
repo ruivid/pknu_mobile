@@ -1,4 +1,4 @@
-package com.example.term_project;
+package com.example.term_project.schedule;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 //import android.widget.ImageView;  // 이미지 추가 고려
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.example.term_project.R;
 
 public class Schedule_Item_View extends LinearLayout {
     TextView textView_Schedule_Name;

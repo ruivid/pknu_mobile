@@ -1,4 +1,4 @@
-package com.example.term_project;
+package com.example.term_project.schedule;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +13,8 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.example.term_project.R;
 
 import java.util.ArrayList;
 

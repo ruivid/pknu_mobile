@@ -1,4 +1,4 @@
-package com.example.term_project;
+package com.example.term_project.phone;
 
 public class Phone_Item {
     String name;

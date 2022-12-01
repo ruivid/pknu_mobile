@@ -1,4 +1,4 @@
-package com.example.term_project;
+package com.example.term_project.phone;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.example.term_project.R;
 
 public class Phone_Item_View extends LinearLayout {
     TextView textView_Name;

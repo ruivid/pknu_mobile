@@ -1,14 +1,14 @@
-package com.example.term_project;
+package com.example.term_project.schedule;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.term_project.R;
 
 public class Schedule_Detail_Activity  extends AppCompatActivity {
 

@@ -1,10 +1,12 @@
-package com.example.term_project;
+package com.example.term_project.main;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
+
+import com.example.term_project.phone.Phone_Main_Fragment;
+import com.example.term_project.schedule.Schedule_Main_Fragment;
 
 
 public class Main_Tab extends FragmentStateAdapter {

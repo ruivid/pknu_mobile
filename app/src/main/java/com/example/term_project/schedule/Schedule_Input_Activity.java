@@ -1,4 +1,4 @@
-package com.example.term_project;
+package com.example.term_project.schedule;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -12,6 +12,9 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.term_project.DBHandler;
+import com.example.term_project.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

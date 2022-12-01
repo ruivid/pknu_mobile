@@ -1,4 +1,4 @@
-package com.example.term_project;
+package com.example.term_project.schedule;
 
 public class Schedule_Item {
     String name;
