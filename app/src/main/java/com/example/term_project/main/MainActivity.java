@@ -4,6 +4,8 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.example.term_project.DBHandler;
@@ -19,6 +21,27 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         DBHandler database = DBHandler.getInstance(this);
+        SharedPreferences pref = getSharedPreferences("isFirst", Activity.MODE_PRIVATE); // 간단한 설정을 저장할 수 있는 로컬 영역에 isFirst 파일 생성
+        boolean first = pref.getBoolean("isFirst", true); // isFirst 값 받아오기. 값이 없을 경우 true 리턴.
+        if(first){ // 값이 true = 최초 실행
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putBoolean("isFirst", false); // isFirst 에 false 저장.
+            editor.apply();
+            try { // 최초 일 때 DB에 기본 더미데이터 생성.
+                database.insertRecordParam("phone_table", new String[]{"kim친구1", "010-1000-1000", "test@test.com"});
+                database.insertRecordParam("phone_table", new String[]{"kim친구2", "010-2000-2000", "test@test.com"});
+                database.insertRecordParam("phone_table", new String[]{"이친구3", "010-3000-3000", "test@test.com"});
+                database.insertRecordParam("phone_table", new String[]{"최친구4", "010-4000-4000", "test@test.com"});
+                database.insertRecordParam("phone_table", new String[]{"하친구5", "010-5000-5000", "test@test.com"});
+                database.insertRecordParam("schedule_table", new String[]{"my일정1", "2022-11-25", "", "", ""});
+                database.insertRecordParam("schedule_table", new String[]{"my일정2", "2022-11-26", "", "", ""});
+                database.insertRecordParam("schedule_table", new String[]{"그룹일정3", "2022-11-26", "", "", ""});
+                database.insertRecordParam("schedule_table", new String[]{"팀일정4", "2022-11-27", "", "", ""});
+                database.insertRecordParam("schedule_table", new String[]{"학과일정5", "2022-11-28", "", "", ""});
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+        }
 
         //Adapter
         final ViewPager2 viewPager = findViewById(R.id.viewpager);

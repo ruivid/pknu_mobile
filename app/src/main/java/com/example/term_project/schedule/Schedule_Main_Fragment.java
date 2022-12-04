@@ -62,6 +62,7 @@ public class Schedule_Main_Fragment extends Fragment {
         /*
             터치 이벤트 (버튼[추가] / 리스트[조회])
          */
+
         Button button = (Button) view.findViewById(R.id.schedule_main_btnPlus);
         button.setOnClickListener(new View.OnClickListener() {
             @Override

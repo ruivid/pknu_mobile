@@ -59,15 +59,10 @@ public class Phone_Main_Fragment extends Fragment {
 
         adapter = new PhoneAdapter();
         adapter.addItem(new Phone_Item("kim친구1", "010-1000-1000", R.drawable.phone_user_image));
-        database.insertRecordParam("phone_table", new String[]{"kim친구1", "010-1000-1000", "test@test.com"});
         adapter.addItem(new Phone_Item("kim친구2", "010-2000-2000", R.drawable.phone_user_image));
-        database.insertRecordParam("phone_table", new String[]{"kim친구2", "010-2000-2000", "test@test.com"});
         adapter.addItem(new Phone_Item("이친구3", "010-3000-3000", R.drawable.phone_user_image));
-        database.insertRecordParam("phone_table", new String[]{"이친구3", "010-3000-3000", "test@test.com"});
         adapter.addItem(new Phone_Item("최친구4", "010-4000-4000", R.drawable.phone_user_image));
-        database.insertRecordParam("phone_table", new String[]{"최친구4", "010-4000-4000", "test@test.com"});
         adapter.addItem(new Phone_Item("하친구5", "010-5000-5000", R.drawable.phone_user_image));
-        database.insertRecordParam("phone_table", new String[]{"하친구5", "010-5000-5000", "test@test.com"});
 
         listView.setAdapter(adapter);
 
