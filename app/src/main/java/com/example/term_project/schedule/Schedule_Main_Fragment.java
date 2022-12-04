@@ -38,12 +38,16 @@ public class Schedule_Main_Fragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, // view 생성
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View schedule_rootview = inflater.inflate(R.layout.schedule_main_fragment, container, false);
+        return inflater.inflate(R.layout.schedule_main_fragment, container, false);
 
-        schedule_listView = (ListView) schedule_rootview.findViewById(R.id.schedule_main_ScheduleListview);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle SavedInstanceState) { // view 생성 후
+        schedule_listView = (ListView) view.findViewById(R.id.schedule_main_ScheduleListview);
 
         adapter = new ScheduleAdapter();
 
@@ -58,7 +62,7 @@ public class Schedule_Main_Fragment extends Fragment {
         /*
             터치 이벤트 (버튼[추가] / 리스트[조회])
          */
-        Button button = (Button) schedule_rootview.findViewById(R.id.schedule_main_btnPlus);
+        Button button = (Button) view.findViewById(R.id.schedule_main_btnPlus);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,9 +80,6 @@ public class Schedule_Main_Fragment extends Fragment {
                 startActivity(Selected_Intent);
             }
         });
-
-        return schedule_rootview;
-
     }
 
     class ScheduleAdapter extends BaseAdapter {

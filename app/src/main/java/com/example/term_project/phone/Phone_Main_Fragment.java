@@ -18,6 +18,7 @@ import com.example.term_project.DBHandler;
 import com.example.term_project.R;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Phone_Main_Fragment extends Fragment {
@@ -25,6 +26,7 @@ public class Phone_Main_Fragment extends Fragment {
     ListView listView;
     PhoneAdapter adapter;
     DBHandler database;
+    List<String[]> items = new ArrayList<>();
 
     public Phone_Main_Fragment() {
         // Required empty public constructor
@@ -39,17 +41,21 @@ public class Phone_Main_Fragment extends Fragment {
         super.onCreate(savedInstanceState);
         try {
             database = DBHandler.getInstance(requireActivity().getApplicationContext());
+
         } catch(Exception e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) { // view 생성
         // Inflate the layout for this fragment
-        View rootview = inflater.inflate(R.layout.phone_main_fragment, container, false);
+        return inflater.inflate(R.layout.phone_main_fragment, container, false);
+    }
 
-        listView = (ListView) rootview.findViewById(R.id.phone_main_PhoneListview);
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) { // view 생성 후
+        listView = view.findViewById(R.id.phone_main_PhoneListview);
 
         adapter = new PhoneAdapter();
         adapter.addItem(new Phone_Item("kim친구1", "010-1000-1000", R.drawable.phone_user_image));
@@ -68,7 +74,8 @@ public class Phone_Main_Fragment extends Fragment {
         /*
             터치 이벤트 (버튼[추가] / 리스트[조회])
          */
-        Button button = (Button) rootview.findViewById(R.id.phone_main_btnPlus);
+
+        Button button = (Button) view.findViewById(R.id.phone_main_btnPlus);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -88,8 +95,6 @@ public class Phone_Main_Fragment extends Fragment {
                 startActivity(Selected_Intent);
             }
         });
-
-        return rootview;
     }
 
     class PhoneAdapter extends BaseAdapter {
