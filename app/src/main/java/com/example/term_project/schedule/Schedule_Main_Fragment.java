@@ -14,14 +14,19 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.term_project.DBHandler;
 import com.example.term_project.R;
+import com.example.term_project.phone.Phone_Item;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Schedule_Main_Fragment extends Fragment {
 
     ListView schedule_listView;
     ScheduleAdapter adapter;
+    DBHandler database;
+    List<String[]> data = new ArrayList<>();
 
     public Schedule_Main_Fragment() {
         // Required empty public constructor
@@ -35,6 +40,12 @@ public class Schedule_Main_Fragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        try {
+            database = DBHandler.getInstance(requireActivity().getApplicationContext());
+            data = database.selectData("schedule_table", "select * from schedule_table");
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -47,16 +58,18 @@ public class Schedule_Main_Fragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle SavedInstanceState) { // view 생성 후
-        schedule_listView = (ListView) view.findViewById(R.id.schedule_main_ScheduleListview);
+        schedule_listView = view.findViewById(R.id.schedule_main_ScheduleListview);
 
         adapter = new ScheduleAdapter();
-
-        adapter.addItem(new Schedule_Item("my일정1", "2022-11-25"));
-        adapter.addItem(new Schedule_Item("my일정2", "2022-11-26"));
-        adapter.addItem(new Schedule_Item("그룹일정3", "2022-11-26"));
-        adapter.addItem(new Schedule_Item("팀일정4", "2022-11-27"));
-        adapter.addItem(new Schedule_Item("학과일정5", "2022-11-28"));
-
+        for(String[] item : data) {
+            adapter.addItem(Schedule_Item.builder()
+                    .name(item[0])
+                    .date(item[1])
+                    .time(item[2])
+                    .place(item[3])
+                    .email(item[4])
+                    .build());
+        }
         schedule_listView.setAdapter(adapter);
 
         /*

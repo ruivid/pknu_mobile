@@ -26,7 +26,7 @@ public class Phone_Main_Fragment extends Fragment {
     ListView listView;
     PhoneAdapter adapter;
     DBHandler database;
-    List<String[]> items = new ArrayList<>();
+    List<String[]> data = new ArrayList<>();
 
     public Phone_Main_Fragment() {
         // Required empty public constructor
@@ -41,7 +41,7 @@ public class Phone_Main_Fragment extends Fragment {
         super.onCreate(savedInstanceState);
         try {
             database = DBHandler.getInstance(requireActivity().getApplicationContext());
-
+            data = database.selectData("phone_table", "select * from phone_table");
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -56,14 +56,15 @@ public class Phone_Main_Fragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) { // view 생성 후
         listView = view.findViewById(R.id.phone_main_PhoneListview);
-
         adapter = new PhoneAdapter();
-        adapter.addItem(new Phone_Item("kim친구1", "010-1000-1000", R.drawable.phone_user_image));
-        adapter.addItem(new Phone_Item("kim친구2", "010-2000-2000", R.drawable.phone_user_image));
-        adapter.addItem(new Phone_Item("이친구3", "010-3000-3000", R.drawable.phone_user_image));
-        adapter.addItem(new Phone_Item("최친구4", "010-4000-4000", R.drawable.phone_user_image));
-        adapter.addItem(new Phone_Item("하친구5", "010-5000-5000", R.drawable.phone_user_image));
-
+        for(String[] item : data) {
+            adapter.addItem(Phone_Item.builder()
+                    .name(item[0])
+                    .phone_number(item[1])
+                    .email(item[2])
+                    .imageId(R.drawable.phone_default_image)
+                    .build());
+        }
         listView.setAdapter(adapter);
 
         /*

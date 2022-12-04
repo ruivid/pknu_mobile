@@ -19,7 +19,7 @@ public class DBHandler {    // Singleton Database
     private DBHandler(Context context){
         database = context.openOrCreateDatabase(databaseName, context.MODE_PRIVATE,null) ; // Database 생성
         String sql_phone = "create table if not exists " + tableName_Phone +
-                "(_id integer PRIMARY KEY autoincrement, name text, phonenumber text, email text)";
+                "(_id integer PRIMARY KEY autoincrement, name text, phone_number text, email text)";
         database.execSQL(sql_phone);        // 연락처 테이블 생성
         String sql_schedule = "create table if not exists " + tableName_Schedule +
                 "(_id integer PRIMARY KEY autoincrement, title text, date text, time text, place text, email text)";    // date?
@@ -51,7 +51,7 @@ public class DBHandler {    // Singleton Database
                 ContentValues recordValues_phone = new ContentValues();
 
                 recordValues_phone.put("name", col[0]);
-                recordValues_phone.put("phonenumber", col[1]);
+                recordValues_phone.put("phone_number", col[1]);
                 recordValues_phone.put("email", col[2]);
 
                 return (int) database.insert(table_name, null, recordValues_phone);
@@ -138,9 +138,9 @@ public class DBHandler {    // Singleton Database
 
                     while(cursor_phone.moveToNext()) {
                         String name = cursor_phone.getString(1);
-                        String phonenumber = cursor_phone.getString(2);
+                        String phone_number = cursor_phone.getString(2);
                         String email = cursor_phone.getString(3);
-                        items.add(new String[]{name, phonenumber, email});
+                        items.add(new String[]{name, phone_number, email});
                     }
                     cursor_phone.close();
                     return items;
@@ -148,7 +148,6 @@ public class DBHandler {    // Singleton Database
                     Cursor cursor_schedule = database.rawQuery(sql, null);
 
                     while(cursor_schedule.moveToNext()){
-                        cursor_schedule.moveToNext();//다음 레코드로 넘어간다.
                         String title = cursor_schedule.getString(1);
                         String date = cursor_schedule.getString(2);
                         String time = cursor_schedule.getString(3);
