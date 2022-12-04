@@ -10,6 +10,8 @@ import com.example.term_project.DBHandler;
 import com.example.term_project.R;
 import com.google.android.material.tabs.TabLayout;
 
+import java.util.List;
+
 public class MainActivity extends FragmentActivity {
 
     @Override
@@ -27,7 +29,7 @@ public class MainActivity extends FragmentActivity {
         TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
         tabs.addTab(tabs.newTab().setText("연락처"));
         tabs.addTab(tabs.newTab().setText("일정"));  // 탭 추가
-        tabs.setTabGravity(tabs.GRAVITY_FILL);      // 탭 정렬 및 탭 양쪽 꽉차게
+        tabs.setTabGravity(TabLayout.GRAVITY_FILL);      // 탭 정렬 및 탭 양쪽 꽉차게
 
         // 탭 누르면 페이지 변경
         tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
