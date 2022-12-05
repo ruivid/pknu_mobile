@@ -49,9 +49,9 @@ public class MainActivity extends FragmentActivity {
         viewPager.setAdapter(TabAdapter);
 
         //Tablayout
-        TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
-        tabs.addTab(tabs.newTab().setText("연락처"));
-        tabs.addTab(tabs.newTab().setText("일정"));  // 탭 추가
+        TabLayout tabs = findViewById(R.id.tabs);
+        tabs.addTab(tabs.newTab().setText("일정"));
+        tabs.addTab(tabs.newTab().setText("연락처"));  // 탭 추가
         tabs.setTabGravity(TabLayout.GRAVITY_FILL);      // 탭 정렬 및 탭 양쪽 꽉차게
 
         // 탭 누르면 페이지 변경

@@ -24,13 +24,12 @@ public class Main_Tab extends FragmentStateAdapter {
         //int index = getRealPosition(position);
         switch (position){
             case 0 :
-                Phone_Main_Fragment tab1 = new Phone_Main_Fragment();
-                return tab1;
+
+                return new Schedule_Main_Fragment();
             case 1:
-                Schedule_Main_Fragment tab2 = new Schedule_Main_Fragment();
-                return tab2;
+                return new Phone_Main_Fragment();
             default:
-                return null;
+                return new Fragment();
         }
         //return null;
     }
