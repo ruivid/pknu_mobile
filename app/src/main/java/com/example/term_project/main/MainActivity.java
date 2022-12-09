@@ -12,10 +12,7 @@ import com.example.term_project.DBHandler;
 import com.example.term_project.R;
 import com.google.android.material.tabs.TabLayout;
 
-import java.util.List;
-
 public class MainActivity extends FragmentActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

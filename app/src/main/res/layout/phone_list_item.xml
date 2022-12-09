@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp">
 
     <ImageView
         android:id="@+id/phone_list_item_user_image"
@@ -10,19 +11,18 @@
         android:src="@drawable/phone_user_image" />
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp">
+        android:layout_height="match_parent"
+        android:layout_marginStart="10dp"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/phone_list_item_name"
+            style="@style/list_title_text"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="New Text"
-            android:textSize="40dp"
-            android:textStyle="bold"
-            android:textColor="@color/black" />
+            android:layout_height="50dp"
+            android:gravity="center_vertical"
+            android:text="New Text" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -30,12 +30,11 @@
 
             <TextView
                 android:id="@+id/phone_list_item_PhoneNumber"
+                style="@style/list_content_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:text="New Text"
-                android:textSize="20dp"
-                android:textColor="#AAAAB7" />
+                android:layout_alignParentEnd="true"
+                android:text="New Text" />
         </RelativeLayout>
     </LinearLayout>
 </LinearLayout>

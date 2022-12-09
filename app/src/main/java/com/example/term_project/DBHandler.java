@@ -113,14 +113,14 @@ public class DBHandler {    // Singleton Database
             case "phone_table":     // 연락처 입력
 
                 return database.delete(table_name,
-                        "name = ?",
+                        "_id = ?",
                         id);
 
             case "schedule_table":  // 일정 입력
                 String[] whereArgs_schedule = {"Rice"};
 
                 return database.delete(table_name,
-                        "name = ?",
+                        "_id = ?",
                         whereArgs_schedule);
             default:
                 return 0;

@@ -7,23 +7,39 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.term_project.DBHandler;
 import com.example.term_project.R;
+import com.example.term_project.main.MainActivity;
 
 public class Phone_Detail_Activity extends AppCompatActivity {
-
+    TextView nameView;
+    TextView phoneView;
+    TextView emailView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.phone_detail);
-
+        DBHandler database = DBHandler.getInstance(this);
+        Intent intent = getIntent() ;
+        String[] detail = intent.getStringArrayExtra("detail"); // 정보 가져오기
+        String name = detail[0];
+        String phone_number = detail[1];
+        String email = detail[2];
+        int id = intent.getIntExtra("id", -1);
+        nameView = findViewById(R.id.phone_detail_name);
+        phoneView = findViewById(R.id.phone_detail_phonenumber);
+        emailView = findViewById(R.id.phone_detail_email);
+        nameView.setText(name);
+        phoneView.setText(phone_number);
+        emailView.setText(email);
         ImageView CallButton = (ImageView) findViewById(R.id.phone_detail_Call);
         CallButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String number = "010-1111-1111";
-                Intent callIntend = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + number));
+                Intent callIntend = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phone_number));
                 startActivity(callIntend);
             }
         });
@@ -32,8 +48,7 @@ public class Phone_Detail_Activity extends AppCompatActivity {
         MessageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String number = "010-1111-1111";
-                Uri smsUri = Uri.parse("sms:"+number);
+                Uri smsUri = Uri.parse("sms:" + phone_number);
                 Intent sendIntent = new Intent(Intent.ACTION_SENDTO, smsUri);
                 startActivity(sendIntent);  // 메시지 앱으로 이동(해당 전화번호)
             }
@@ -43,7 +58,7 @@ public class Phone_Detail_Activity extends AppCompatActivity {
         /*
             하단 버튼 터치 이벤트 (뒤로가기 버튼 / 편집 버튼 / 삭제 버튼)
          */
-        // 뒤로가기 버튼
+        /* 이거 필요한지 의문이에요 // 뒤로가기 버튼
         Button BackButton = (Button) findViewById(R.id.phone_detail_backbutton);
         BackButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,15 +66,15 @@ public class Phone_Detail_Activity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "뒤로가기 클릭", Toast.LENGTH_LONG).show();
                 finish();
             }
-        });
+        });*/
 
         // 편집 버튼
-        Button EditButton = (Button) findViewById(R.id.phone_detail_editbutton);
+        Button EditButton = (Button) findViewById(R.id.phone_detail_editbutton); //---------------------------
         EditButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent PhoneInputIntent = new Intent(getApplicationContext(), Phone_Input_Activity.class);   // 추가화면(=개별 조회화면)
-                //PhoneInputIntent.putExtra("전화번호", "010-1111-1111");
+                PhoneInputIntent.putExtra("id", id);
                 startActivity(PhoneInputIntent);
             }
         });
@@ -70,9 +85,9 @@ public class Phone_Detail_Activity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Toast.makeText(getApplicationContext(), "삭제 클릭", Toast.LENGTH_LONG).show();/*
-                Intent PhoneInputIntent = new Intent(getApplicationContext(), Phone_Input_Activity.class);   // 추가화면(=개별 조회화면)
-                startActivity(PhoneInputIntent);*/
+                Toast.makeText(getApplicationContext(), "삭제 클릭", Toast.LENGTH_LONG).show();
+                database.deleteRecordParam("phone_table", new String[]{Integer.toString(id)});
+                finish();
             }
         });
 

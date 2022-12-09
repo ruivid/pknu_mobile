@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +24,6 @@ import java.util.List;
 import java.util.Objects;
 
 public class Phone_Main_Fragment extends Fragment {
-
     ListView listView;
     PhoneAdapter adapter;
     DBHandler database;
@@ -39,6 +40,7 @@ public class Phone_Main_Fragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        System.out.println("onCreate");
         try {
             database = DBHandler.getInstance(requireActivity().getApplicationContext());
             data = database.selectData("phone_table", "select * from phone_table");
@@ -50,11 +52,13 @@ public class Phone_Main_Fragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) { // view 생성
         // Inflate the layout for this fragment
+        System.out.println("onCreateView");
         return inflater.inflate(R.layout.phone_main_fragment, container, false);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) { // view 생성 후
+        System.out.println("onViewCreated");
         listView = view.findViewById(R.id.phone_main_PhoneListview);
         adapter = new PhoneAdapter();
         for(String[] item : data) {
@@ -62,7 +66,7 @@ public class Phone_Main_Fragment extends Fragment {
                     .name(item[0])
                     .phone_number(item[1])
                     .email(item[2])
-                    .imageId(R.drawable.phone_default_image)
+                    .imageId(R.drawable.phone_user_image)
                     .build());
         }
         listView.setAdapter(adapter);
@@ -82,15 +86,37 @@ public class Phone_Main_Fragment extends Fragment {
         });
 
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() { // position으로 넘기는게 아니라 DB 내 컬럼 값으로---------------------------
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 Phone_Item item = (Phone_Item) adapter.getItem(position);
                 Toast.makeText(getContext(), "선택 : " + item.getName(), Toast.LENGTH_LONG).show();
                 Intent Selected_Intent = new Intent(getContext(), Phone_Detail_Activity.class); // 개별 조회화면(=[데이터첨부된]추가화면)
+                Selected_Intent.putExtra("detail", data.get(position));
+                Selected_Intent.putExtra("id", position + 1); // id는 1부터 시작한다.
                 startActivity(Selected_Intent);
             }
         });
+    }
+
+    @Override
+    public void onStart() { // view 사용자에게 보이기 시작. 상호작용 불가능.
+        super.onStart();
+        data = database.selectData("phone_table", "select * from phone_table");
+        adapter.clearItem();
+        adapter = new PhoneAdapter();        // 데이터 가져오는 위치를 여기로 옮겨야 할 듯. 현재 onViewCreated 중복 조회. ---------------------------
+        for(String[] item : data) {
+            adapter.addItem(Phone_Item.builder()
+                    .name(item[0])
+                    .phone_number(item[1])
+                    .email(item[2])
+                    .imageId(R.drawable.phone_user_image)
+                    .build());
+        }
+        listView.setAdapter(adapter);
+        FragmentTransaction ft = getParentFragmentManager().beginTransaction(); // DB 업데이트를 갱신하기 위한 프래그먼트 새로고침
+        ft.detach(this).attach(this).commit();
+        System.out.println("onStart");
     }
 
     class PhoneAdapter extends BaseAdapter {
@@ -126,5 +152,7 @@ public class Phone_Main_Fragment extends Fragment {
 
             return view;
         }
+
+        public void clearItem() { items.clear(); }
     }
 }
