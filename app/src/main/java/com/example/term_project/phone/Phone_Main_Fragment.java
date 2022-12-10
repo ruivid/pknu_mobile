@@ -196,7 +196,8 @@ public class Phone_Main_Fragment extends Fragment {
             }
         }
         else{   // 문자 입력 시
-            data = database.selectData("phone_table", "select * from phone_table where name like \"%"+s_text+"%\""); // DB에서 검색 데이터 가져오기
+            data = database.selectData("phone_table", "select * from phone_table where name like \"%"+s_text+ "%\" " +
+                    "OR phone_number like \"%"+s_text+"%\""); // DB에서 검색 데이터 가져오기
             for(String[] item : data) { // Db에서 가져온 데이터로 Phone_item 객체 만들어 어댑터에 등록
                 adapter.addItem(Phone_Item.builder()
                         .name(item[0])
