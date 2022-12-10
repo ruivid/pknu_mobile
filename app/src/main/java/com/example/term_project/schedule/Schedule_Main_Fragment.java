@@ -88,23 +88,7 @@ public class Schedule_Main_Fragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) { // 텍스트 입력 받은 후
-                adapter.clearItem(); // 문자 입력할 때마다 다 지우고 새로 생성
-                editText.addTextChangedListener(new TextWatcher() { // editText change 이벤트
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                    }
-
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable s) { // 텍스트 입력 받은 후
-                        search(s.toString().trim());
-                    }
-                });
+                search(s.toString().trim());
             }
         });
         searchImage.setOnClickListener(new View.OnClickListener() {
