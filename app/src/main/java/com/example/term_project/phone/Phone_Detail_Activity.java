@@ -23,18 +23,23 @@ public class Phone_Detail_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.phone_detail);
         DBHandler database = DBHandler.getInstance(this);
-        Intent intent = getIntent() ;
+
+        Intent intent = getIntent();
         String[] detail = intent.getStringArrayExtra("detail"); // 정보 가져오기
+
         String name = detail[0];
         String phone_number = detail[1];
         String email = detail[2];
-        int id = intent.getIntExtra("id", -1);
+        String id = detail[3];
+
         nameView = findViewById(R.id.phone_detail_name);
         phoneView = findViewById(R.id.phone_detail_phonenumber);
         emailView = findViewById(R.id.phone_detail_email);
+
         nameView.setText(name);
         phoneView.setText(phone_number);
         emailView.setText(email);
+
         ImageView CallButton = (ImageView) findViewById(R.id.phone_detail_Call);
         CallButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,8 +79,11 @@ public class Phone_Detail_Activity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent PhoneInputIntent = new Intent(getApplicationContext(), Phone_Input_Activity.class);   // 추가화면(=개별 조회화면)
+                PhoneInputIntent.putExtra("type", "edit");
                 PhoneInputIntent.putExtra("id", id);
+                PhoneInputIntent.putExtra("editDetail", detail); // 아이템의 정보를 detail에 담음
                 startActivity(PhoneInputIntent);
+                finish();
             }
         });
 
@@ -84,9 +92,7 @@ public class Phone_Detail_Activity extends AppCompatActivity {
         DeleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                Toast.makeText(getApplicationContext(), "삭제 클릭", Toast.LENGTH_LONG).show();
-                database.deleteRecordParam("phone_table", new String[]{Integer.toString(id)});
+                database.deleteRecordParam("phone_table", new String[]{id});
                 finish();
             }
         });

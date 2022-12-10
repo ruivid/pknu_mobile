@@ -1,16 +1,20 @@
 package com.example.term_project.phone;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class Phone_Item {
     String name;
     String phone_number;
     String email;
     int imageId;
+    String Id;
 
     public Phone_Item(Builder builder) {
         this.name = builder.name;
         this.phone_number = builder.phone_number;
         this.email = builder.email;
         this.imageId = builder.imageId;
+        this.Id = builder.Id;
     }
 
     public static Builder builder() { // 객체 생성 방식을 builder 패턴으로 변경
@@ -21,6 +25,7 @@ public class Phone_Item {
         private String phone_number;
         private String email;
         private int imageId;
+        private String Id;
         private Builder() {};
 
         public Builder name(String name) {
@@ -37,6 +42,10 @@ public class Phone_Item {
         }
         public Builder imageId(int imageId) {
             this.imageId = imageId;
+            return this;
+        }
+        public Builder Id(String Id) {
+            this.Id = Id;
             return this;
         }
         public Phone_Item build() {
@@ -64,5 +73,9 @@ public class Phone_Item {
     public int getImageIdId() {
         return imageId;
     }
+    public String getId() { return Id; }
 
+    public String[] getDetail() {
+        return new String[]{this.name, this.phone_number, this.email, this.Id};
+    }
 }

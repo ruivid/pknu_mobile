@@ -2,6 +2,7 @@ package com.example.term_project.schedule;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -34,6 +35,8 @@ public class Schedule_Input_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.schedule_input);
         DBHandler database = DBHandler.getInstance(this);
+        Intent intent = getIntent() ;
+        String type = intent.getStringExtra("type");
 
         String[] insert_data = new String[5];   // {제목[title-0] / 날짜[date-1] / 시간[time-2] / 장소[place-3] / 이메일[Email-4] }
 
@@ -93,6 +96,26 @@ public class Schedule_Input_Activity extends AppCompatActivity {
             }
         });
 
+        // 조회에서 편집버튼을 누른 경우, 해당 데이터 가져오기
+        if(type.equals("edit")){
+            String[] detail = intent.getStringArrayExtra("editDetail"); // 편집 정보 가져오기
+
+            String title = detail[0];
+            String date = detail[1];
+            String time = detail[2];
+            String place = detail[3];
+            String email = detail[4];
+
+            phone_title_edittext.setText(title);
+            phone_date_textview.setText(date);
+            phone_time_textview.setText(time);
+            phone_place_edittext.setText(place);
+            phone_email_edittext.setText(email);
+
+            insert_data[1] = phone_date_textview.getText().toString();
+            insert_data[2] = phone_time_textview.getText().toString();
+        }
+
         /*
             터치 이벤트 (취소 버튼 / 저장 버튼)
          */
@@ -100,39 +123,38 @@ public class Schedule_Input_Activity extends AppCompatActivity {
         CancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                Toast.makeText(getApplicationContext(), "취소 클릭", Toast.LENGTH_LONG).show();/*
-                Intent PhoneInputIntent = new Intent(getApplicationContext(), Phone_Input_Activity.class);   // 추가화면(=개별 조회화면)
-                startActivity(PhoneInputIntent);*/
                 finish();
             }
         });
 
-        Button SaveButton = (Button) findViewById(R.id.schedule_input_savebutton);
+        Button SaveButton = (Button) findViewById(R.id.schedule_input_savebutton); // 입력받은 값 저장
         SaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*
-                    DataBase에 입력한 값 넣기
-                 */
+                String id = intent.getStringExtra("id");
                 insert_data[0] = phone_title_edittext.getText().toString();     // 제목 삽입
                 insert_data[3] = phone_place_edittext.getText().toString();     // 장소 삽입
                 insert_data[4] = phone_email_edittext.getText().toString();     // 이메일 삽입
-
-                database.insertRecordParam("schedule_table", insert_data);
-
-                Toast.makeText(getApplicationContext(), "저장 클릭"
-                        + insert_data[0] + " "
-                        + insert_data[1] + " "
-                        + insert_data[2] + " "
-                        + insert_data[3] + " "
-                        + insert_data[4] + " ", Toast.LENGTH_LONG).show();
-
-                //int age = Integer.parseInt(age_str);
-                //insertData(Database_table, name, phone_number, email);
-                //finish();
+                if(!insert_data[0].equals("") && insert_data[1] != null) {
+                    if(type.equals("new")) {
+                        database.insertRecordParam("schedule_table",
+                                insert_data);
+                        finish();
+                    }
+                    else if(type.equals("edit")) {
+                        database.updateRecordParam("schedule_table",
+                                insert_data,
+                                new String[]{id});
+                        finish();
+                    }
+                    else { Toast.makeText(getApplicationContext(),
+                            "잘못된 접근입니다.", Toast.LENGTH_LONG).show(); }
+                }
+                else {
+                    Toast.makeText(getApplicationContext(),
+                            "이름과 날짜는\n필수 입력 값입니다.", Toast.LENGTH_LONG).show();
+                }
             }
         });
-
     }
 }

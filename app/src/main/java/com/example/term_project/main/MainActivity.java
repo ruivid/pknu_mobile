@@ -25,16 +25,20 @@ public class MainActivity extends FragmentActivity {
             editor.putBoolean("isFirst", false); // isFirst 에 false 저장.
             editor.apply();
             try { // 최초 일 때 DB에 기본 더미데이터 생성.
-                database.insertRecordParam("phone_table", new String[]{"kim친구1", "010-1000-1000", "test@test.com"});
-                database.insertRecordParam("phone_table", new String[]{"kim친구2", "010-2000-2000", "test@test.com"});
-                database.insertRecordParam("phone_table", new String[]{"이친구3", "010-3000-3000", "test@test.com"});
-                database.insertRecordParam("phone_table", new String[]{"최친구4", "010-4000-4000", "test@test.com"});
-                database.insertRecordParam("phone_table", new String[]{"하친구5", "010-5000-5000", "test@test.com"});
-                database.insertRecordParam("schedule_table", new String[]{"my일정1", "2022-11-25", "", "", ""});
-                database.insertRecordParam("schedule_table", new String[]{"my일정2", "2022-11-26", "", "", ""});
-                database.insertRecordParam("schedule_table", new String[]{"그룹일정3", "2022-11-26", "", "", ""});
-                database.insertRecordParam("schedule_table", new String[]{"팀일정4", "2022-11-27", "", "", ""});
-                database.insertRecordParam("schedule_table", new String[]{"학과일정5", "2022-11-28", "", "", ""});
+                database.insertRecordParam("phone_table", new String[]{"김재호", "010-0101-0101", "AAA111@gmail.com"});
+                database.insertRecordParam("phone_table", new String[]{"이승혁", "010-1010-1010", "ABA121@gmail.com"});
+                database.insertRecordParam("phone_table", new String[]{"남세일", "010-1234-5678", "NSI123@gmail.com"});
+                database.insertRecordParam("phone_table", new String[]{"송재운", "010-4444-1234", "SJW423@naver.com"});
+                database.insertRecordParam("phone_table", new String[]{"한송운", "010-5555-5678", "HSH567@gmail.com"});
+                database.insertRecordParam("phone_table", new String[]{"안호준", "010-6666-6789", "AHJ678@gmail.com"});
+                database.insertRecordParam("phone_table", new String[]{"채이현", "010-7777-7654", "CYH777@naver.com"});
+                database.insertRecordParam("schedule_table", new String[]{"모바일 과제", "2022-12-03", "PM 11:59", "부경대", "AAA111@gmail.com"});
+                database.insertRecordParam("schedule_table", new String[]{"공학 과제", "2022-12-13", "PM 10:59", "부경대", "AAA111@gmail.com"});
+                database.insertRecordParam("schedule_table", new String[]{"치과 치료", "2022-12-18", "AM 10:00", "DC치과", "NSI123@gmail.com"});
+                database.insertRecordParam("schedule_table", new String[]{"내과 치료", "2022-12-28", "AM 11:00", "종합병원", "CYH777@naver.com"});
+                database.insertRecordParam("schedule_table", new String[]{"친구 약속", "2022-12-25", "PM 2:00", "카페", "ABA121@gmail.com"});
+                database.insertRecordParam("schedule_table", new String[]{"휴대폰 수리", "2022-12-01", "AM 11:30", "B수리점", "AHJ678@gmail.com"});
+                database.insertRecordParam("schedule_table", new String[]{"놀이공원", "2022-12-24", "AM 8:00", "A놀이공원", "SJW423@naver.com"});
             } catch(Exception e) {
                 e.printStackTrace();
             }

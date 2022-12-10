@@ -82,25 +82,29 @@ public class DBHandler {    // Singleton Database
 
         switch (table_name){
             case "phone_table":     // 연락처 입력
-                int phone_count = 1;
                 ContentValues recordValues_phone = new ContentValues();
 
                 recordValues_phone.put("name", col[0]);
+                recordValues_phone.put("phone_number", col[1]);
+                recordValues_phone.put("email", col[2]);
 
                 return database.update(table_name,
                         recordValues_phone,
-                        "name = ?",     // primary key로 검색
+                        "_id = ?",     // primary key로 검색
                         id);
 
             case "schedule_table":  // 일정 입력
-                int schedule_count = 1;
                 ContentValues recordValues_schedule = new ContentValues();
 
                 recordValues_schedule.put("title", col[0]);
+                recordValues_schedule.put("date", col[1]);
+                recordValues_schedule.put("time", col[2]);
+                recordValues_schedule.put("place", col[3]);
+                recordValues_schedule.put("email", col[4]);
 
                 return database.update(table_name,
                         recordValues_schedule,
-                        "name = ?",     // primary key로 검색
+                        "_id = ?",     // primary key로 검색
                         id);
             default:
                 return 0;
@@ -108,23 +112,9 @@ public class DBHandler {    // Singleton Database
     }
 
     public int deleteRecordParam(String table_name, String[] id) {
-
-        switch (table_name){
-            case "phone_table":     // 연락처 입력
-
-                return database.delete(table_name,
-                        "_id = ?",
-                        id);
-
-            case "schedule_table":  // 일정 입력
-                String[] whereArgs_schedule = {"Rice"};
-
-                return database.delete(table_name,
-                        "_id = ?",
-                        whereArgs_schedule);
-            default:
-                return 0;
-        }
+        return database.delete(table_name,
+                "_id = ?",
+                id);
     }
 
     public List<String[]> selectData(String table_name, String sql) {
@@ -140,7 +130,8 @@ public class DBHandler {    // Singleton Database
                         String name = cursor_phone.getString(1);
                         String phone_number = cursor_phone.getString(2);
                         String email = cursor_phone.getString(3);
-                        items.add(new String[]{name, phone_number, email});
+                        String Id = cursor_phone.getString(0);
+                        items.add(new String[]{name, phone_number, email, Id});
                     }
                     cursor_phone.close();
                     return items;
@@ -153,7 +144,8 @@ public class DBHandler {    // Singleton Database
                         String time = cursor_schedule.getString(3);
                         String place = cursor_schedule.getString(4);
                         String email = cursor_schedule.getString(5);
-                        items.add(new String[]{title, date, time, place, email});
+                        String Id = cursor_schedule.getString(0);
+                        items.add(new String[]{title, date, time, place, email, Id});
                     }
                     cursor_schedule.close();
                     return items;

@@ -6,6 +6,7 @@ public class Schedule_Item {
     String time;
     String place;
     String email;
+    String Id;
 
     public Schedule_Item(Builder builder) {
         this.name = builder.name;
@@ -13,6 +14,7 @@ public class Schedule_Item {
         this.time = builder.time;
         this.place = builder.place;
         this.email = builder.email;
+        this.Id = builder.Id;
     }
 
     public static Builder builder() { // 객체 생성 방식을 builder 패턴으로 변경
@@ -24,6 +26,7 @@ public class Schedule_Item {
         private String time;
         private String place;
         private String email;
+        private String Id;
         private Builder() {};
 
         public Builder name(String name) {
@@ -46,6 +49,10 @@ public class Schedule_Item {
             this.email = email;
             return this;
         }
+        public Builder Id(String Id) {
+            this.Id = Id;
+            return this;
+        }
         public Schedule_Item build() {
             return new Schedule_Item(this);
         }
@@ -65,4 +72,7 @@ public class Schedule_Item {
         return date;
     }
 
+    public String[] getDetail() {
+        return new String[]{this.name, this.date, this.time, this.place, this.email, this.Id};
+    }
 }
