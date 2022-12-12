@@ -4,14 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,15 +20,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.term_project.DBHandler;
 import com.example.term_project.R;
-import com.example.term_project.schedule.Schedule_Item;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class Phone_Main_Fragment extends Fragment {
     ListView listView;
@@ -147,7 +142,7 @@ public class Phone_Main_Fragment extends Fragment {
                     .name(item[0])
                     .phone_number(item[1])
                     .email(item[2])
-                    .imageId(R.drawable.phone_user_image)
+                    .imagePath(item[4])
                     .Id(item[3])
                     .build());
         }
@@ -223,7 +218,12 @@ public class Phone_Main_Fragment extends Fragment {
             Phone_Item item = items.get(position);
             view.setName(item.getName());
             view.setPhone_number(item.getPhone_number());
-            view.setImage(item.getImageIdId());
+            if(!item.getImagePath().isEmpty()) {
+                view.setImage(item.getImagePath());
+            }
+            else {
+                view.setImage(R.drawable.phone_user_image);
+            }
 
             return view;
         }
@@ -240,7 +240,7 @@ public class Phone_Main_Fragment extends Fragment {
                         .name(item[0])
                         .phone_number(item[1])
                         .email(item[2])
-                        .imageId(R.drawable.phone_user_image)
+                        .imagePath(item[4])
                         .Id(item[3])
                         .build());
             }
@@ -254,7 +254,7 @@ public class Phone_Main_Fragment extends Fragment {
                         .name(item[0])
                         .phone_number(item[1])
                         .email(item[2])
-                        .imageId(R.drawable.phone_user_image)
+                        .imagePath(item[4])
                         .Id(item[3])
                         .build());
             }
@@ -270,7 +270,7 @@ public class Phone_Main_Fragment extends Fragment {
                     .name(item[0])
                     .phone_number(item[1])
                     .email(item[2])
-                    .imageId(R.drawable.phone_user_image)
+                    .imagePath(item[4])
                     .Id(item[3])
                     .build());
         }

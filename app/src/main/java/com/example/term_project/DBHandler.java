@@ -19,7 +19,7 @@ public class DBHandler {    // Singleton Database
     private DBHandler(Context context){
         database = context.openOrCreateDatabase(databaseName, context.MODE_PRIVATE,null) ; // Database 생성
         String sql_phone = "create table if not exists " + tableName_Phone +
-                "(_id integer PRIMARY KEY autoincrement, name text, phone_number text, email text)";
+                "(_id integer PRIMARY KEY autoincrement, name text, phone_number text, email text, imagePath text)";
         database.execSQL(sql_phone);        // 연락처 테이블 생성
         String sql_schedule = "create table if not exists " + tableName_Schedule +
                 "(_id integer PRIMARY KEY autoincrement, title text, date text, time text, place text, email text)";    // date?
@@ -53,6 +53,7 @@ public class DBHandler {    // Singleton Database
                 recordValues_phone.put("name", col[0]);
                 recordValues_phone.put("phone_number", col[1]);
                 recordValues_phone.put("email", col[2]);
+                recordValues_phone.put("imagePath", col[3]);
 
                 return (int) database.insert(table_name, null, recordValues_phone);
 
@@ -87,6 +88,7 @@ public class DBHandler {    // Singleton Database
                 recordValues_phone.put("name", col[0]);
                 recordValues_phone.put("phone_number", col[1]);
                 recordValues_phone.put("email", col[2]);
+                recordValues_phone.put("imagePath", col[3]);
 
                 return database.update(table_name,
                         recordValues_phone,
@@ -130,8 +132,9 @@ public class DBHandler {    // Singleton Database
                         String name = cursor_phone.getString(1);
                         String phone_number = cursor_phone.getString(2);
                         String email = cursor_phone.getString(3);
+                        String imagePath = cursor_phone.getString(4);
                         String Id = cursor_phone.getString(0);
-                        items.add(new String[]{name, phone_number, email, Id});
+                        items.add(new String[]{name, phone_number, email, Id, imagePath});
                     }
                     cursor_phone.close();
                     return items;

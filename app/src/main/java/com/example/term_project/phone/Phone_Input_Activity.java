@@ -4,10 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.term_project.DBHandler;
@@ -18,6 +20,8 @@ public class Phone_Input_Activity extends AppCompatActivity {
     EditText phone_name_edittext;
     EditText phone_phonenumber_edittext;
     EditText phone_email_edittext;
+    ImageView phone_image;
+    String imagePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +35,7 @@ public class Phone_Input_Activity extends AppCompatActivity {
         phone_name_edittext         = (EditText) findViewById(R.id.phone_input_name);
         phone_phonenumber_edittext  = (EditText) findViewById(R.id.phone_input_phonenumber);
         phone_email_edittext        = (EditText) findViewById(R.id.phone_input_email);
+        phone_image = (ImageView) findViewById(R.id.Selected_imageView);
 
         if(type.equals("edit")){
             String[] detail = intent.getStringArrayExtra("editDetail"); // 편집 정보 가져오기
@@ -41,6 +46,15 @@ public class Phone_Input_Activity extends AppCompatActivity {
             phone_phonenumber_edittext.setText(phone_number);
             phone_email_edittext.setText(email);
         }
+
+        phone_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType("image/*");
+                startActivityForResult(intent, 1);
+            }
+        });
 
         Button SaveButton = (Button) findViewById(R.id.phone_input_savebutton);
         SaveButton.setOnClickListener(new View.OnClickListener() {
@@ -53,7 +67,8 @@ public class Phone_Input_Activity extends AppCompatActivity {
                     database.insertRecordParam("phone_table",
                             new String[]{phone_name_edittext.getText().toString(),
                                     phone_phonenumber_edittext.getText().toString(),
-                                    phone_email_edittext.getText().toString()});
+                                    phone_email_edittext.getText().toString(),
+                                    imagePath});
                     finish();
                 }
                 else if(type.equals("edit")) {
@@ -85,5 +100,18 @@ public class Phone_Input_Activity extends AppCompatActivity {
             }
         });
 
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch(requestCode) {
+            case 1:
+                if(resultCode == RESULT_OK) {
+                    Uri uri = data.getData();
+                    phone_image.setImageURI(uri);
+                    imagePath = uri.toString();
+                }
+        }
     }
 }

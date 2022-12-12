@@ -1,19 +1,17 @@
 package com.example.term_project.phone;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 public class Phone_Item {
     String name;
     String phone_number;
     String email;
-    int imageId;
+    String imagePath;
     String Id;
 
     public Phone_Item(Builder builder) {
         this.name = builder.name;
         this.phone_number = builder.phone_number;
         this.email = builder.email;
-        this.imageId = builder.imageId;
+        this.imagePath = builder.imagePath;
         this.Id = builder.Id;
     }
 
@@ -24,7 +22,7 @@ public class Phone_Item {
         private String name;
         private String phone_number;
         private String email;
-        private int imageId;
+        private String imagePath;
         private String Id;
         private Builder() {};
 
@@ -40,8 +38,8 @@ public class Phone_Item {
             this.email = email;
             return this;
         }
-        public Builder imageId(int imageId) {
-            this.imageId = imageId;
+        public Builder imagePath(String imagePath) {
+            this.imagePath = imagePath;
             return this;
         }
         public Builder Id(String Id) {
@@ -67,11 +65,11 @@ public class Phone_Item {
         return phone_number;
     }
 
-    public void setImageIdId(int imageId) {
-        this.imageId = imageId;
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
-    public int getImageIdId() {
-        return imageId;
+    public String getImagePath() {
+        return imagePath;
     }
     public String getId() { return Id; }
 

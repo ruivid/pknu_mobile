@@ -1,6 +1,7 @@
 package com.example.term_project.phone;
 
 import android.content.Context;
+import android.net.Uri;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
@@ -39,7 +40,8 @@ public class Phone_Item_View extends LinearLayout {
     public void setPhone_number(String phone_number) {
         textView_PhoneNumber.setText(phone_number);
     }
-    public void setImage(int imageId) {
-        imageView.setImageResource(imageId);
+    public void setImage(String imagePath) {
+        imageView.setImageURI(Uri.parse(imagePath));
     }
+    public void setImage(int imageId) { imageView.setImageResource(imageId); }
 }
