@@ -9,7 +9,11 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -31,10 +35,13 @@ import java.util.Objects;
 public class Phone_Main_Fragment extends Fragment {
     ListView listView;
     EditText editText;
-    ImageView searchImage;
+    ImageView MenuImage;
     PhoneAdapter adapter;
     DBHandler database;
     List<String[]> data = new ArrayList<>();
+
+    String sort_sql = "_id";
+    String sort_sql_asc = "asc";
 
     public Phone_Main_Fragment() {
         // Required empty public constructor
@@ -65,7 +72,7 @@ public class Phone_Main_Fragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) { // view 생성 후
         editText = view.findViewById(R.id.phone_main_SearchName);       // 검색 창
-        searchImage = view.findViewById(R.id.phone_main_SearchImage);   // 검색 이미지 버튼
+        MenuImage = view.findViewById(R.id.phone_main_SortImage);   // 검색 이미지 버튼
 
         listView = view.findViewById(R.id.phone_main_PhoneListview);
         adapter = new PhoneAdapter();
@@ -90,11 +97,16 @@ public class Phone_Main_Fragment extends Fragment {
                 search(s.toString().trim());
             }
         });
-        searchImage.setOnClickListener(new View.OnClickListener() {
+
+
+        //registerForContextMenu(MenuImage);
+        MenuImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String serach_text = editText.getText().toString();
-                search(serach_text);
+                registerForContextMenu(view);
+                view.showContextMenu(view.getX(), view.getY()+view.getHeight());
+                //getActivity().openContextMenu(view);
+                unregisterForContextMenu(view);
             }
         });
 
@@ -143,6 +155,44 @@ public class Phone_Main_Fragment extends Fragment {
         FragmentTransaction ft = getParentFragmentManager().beginTransaction(); // DB 업데이트를 갱신하기 위한 프래그먼트 새로고침
         ft.detach(this).attach(this).commit();
     }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu,
+                                    View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getActivity().getMenuInflater();
+        inflater.inflate(R.menu.sort_menu_phone, menu);
+    }
+
+    public boolean onContextItemSelected(MenuItem item)
+    {
+        switch(item.getItemId())
+        {
+            case R.id.OldSort_phone:
+                sort_sql = "_id";
+                sort_sql_asc = "asc";
+                sort(sort_sql, sort_sql_asc);
+                return true;
+            case R.id.CurrentSort_phone:
+                sort_sql = "_id";
+                sort_sql_asc = "desc";
+                sort(sort_sql, sort_sql_asc);
+                return true;
+            case R.id.NameSort_phone:
+                sort_sql = "name";
+                sort_sql_asc = "asc";
+                sort(sort_sql, sort_sql_asc);
+                return true;
+            case R.id.NameReverseSort_phone:
+                sort_sql = "name";
+                sort_sql_asc = "desc";
+                sort(sort_sql, sort_sql_asc);
+                return true;
+        }
+        return super.onContextItemSelected(item);
+    }
+
 
     class PhoneAdapter extends BaseAdapter {
         ArrayList<Phone_Item> items = new ArrayList<Phone_Item>();
@@ -197,7 +247,8 @@ public class Phone_Main_Fragment extends Fragment {
         }
         else{   // 문자 입력 시
             data = database.selectData("phone_table", "select * from phone_table where name like \"%"+s_text+ "%\" " +
-                    "OR phone_number like \"%"+s_text+"%\""); // DB에서 검색 데이터 가져오기
+                    "OR phone_number like \"%"+s_text+"%\""
+                    +" order by "+sort_sql+" "+sort_sql_asc+""); // DB에서 검색 데이터 가져오기
             for(String[] item : data) { // Db에서 가져온 데이터로 Phone_item 객체 만들어 어댑터에 등록
                 adapter.addItem(Phone_Item.builder()
                         .name(item[0])
@@ -207,6 +258,21 @@ public class Phone_Main_Fragment extends Fragment {
                         .Id(item[3])
                         .build());
             }
+        }
+        listView.setAdapter(adapter); // 리스트뷰에 세팅
+    }
+
+    public void sort(String col, String asc){
+        adapter.clearItem(); // 문자 입력할 때마다 다 지우고 새로 생성
+        data = database.selectData("phone_table", "select * from phone_table" + " order by "+col+" "+asc+""); // DB에서 전체 데이터 가져오기
+        for(String[] item : data) { // Db에서 가져온 데이터로 Phone_item 객체 만들어 어댑터에 등록
+            adapter.addItem(Phone_Item.builder()
+                    .name(item[0])
+                    .phone_number(item[1])
+                    .email(item[2])
+                    .imageId(R.drawable.phone_user_image)
+                    .Id(item[3])
+                    .build());
         }
         listView.setAdapter(adapter); // 리스트뷰에 세팅
     }

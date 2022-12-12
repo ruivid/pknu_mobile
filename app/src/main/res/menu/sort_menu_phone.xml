@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/OldSort_phone"
+        android:title="오래된 생성순" />
+    <item
+        android:id="@+id/CurrentSort_phone"
+        android:title="최근 생성순" />
+    <item
+        android:id="@+id/NameSort_phone"
+        android:title="이름 순" />
+    <item
+        android:id="@+id/NameReverseSort_phone"
+        android:title="이름 역순" />
+</menu>

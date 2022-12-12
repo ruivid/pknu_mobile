@@ -8,7 +8,10 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -32,10 +35,13 @@ public class Schedule_Main_Fragment extends Fragment {
 
     ListView schedule_listView;
     EditText editText;
-    ImageView searchImage;
+    ImageView MenuImage;
     ScheduleAdapter adapter;
     DBHandler database;
     List<String[]> data = new ArrayList<>();
+
+    String sort_sql = "_id";
+    String sort_sql_asc = "asc";
 
     public Schedule_Main_Fragment() {
         // Required empty public constructor
@@ -66,7 +72,7 @@ public class Schedule_Main_Fragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle SavedInstanceState) { // view 생성 후
         editText = view.findViewById(R.id.schedule_main_SearchName);       // 검색 창
-        searchImage = view.findViewById(R.id.schedule_main_SearchImage);   // 검색 이미지 버튼
+        MenuImage = view.findViewById(R.id.schedule_main_SortImage);   // 검색 이미지 버튼
 
         schedule_listView = view.findViewById(R.id.schedule_main_ScheduleListview);
         adapter = new ScheduleAdapter();
@@ -91,13 +97,18 @@ public class Schedule_Main_Fragment extends Fragment {
                 search(s.toString().trim());
             }
         });
-        searchImage.setOnClickListener(new View.OnClickListener() {
+
+        //registerForContextMenu(MenuImage);    // 롱터치를 원할 때
+        MenuImage.setOnClickListener(new View.OnClickListener() {   // 숏터치를 원할 때ㄹ
             @Override
             public void onClick(View view) {
-                String serach_text = editText.getText().toString();
-                search(serach_text);
+                registerForContextMenu(view);
+                view.showContextMenu(view.getX(), view.getY()+view.getHeight());
+                //getActivity().openContextMenu(view);  // 팝업창으로 띄우는 방법
+                unregisterForContextMenu(view);
             }
         });
+
 
         /*
             터치 이벤트 (버튼[추가] / 리스트[조회])
@@ -143,6 +154,53 @@ public class Schedule_Main_Fragment extends Fragment {
         schedule_listView.setAdapter(adapter);
         FragmentTransaction ft = getParentFragmentManager().beginTransaction(); // DB 업데이트를 갱신하기 위한 프래그먼트 새로고침
         ft.detach(this).attach(this).commit();
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu,
+                                    View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getActivity().getMenuInflater();
+        inflater.inflate(R.menu.sort_menu_schedule, menu);
+    }
+
+    public boolean onContextItemSelected(MenuItem item)
+    {
+        switch(item.getItemId())
+        {
+            case R.id.OldSort:
+                sort_sql = "_id";
+                sort_sql_asc = "asc";
+                sort(sort_sql, sort_sql_asc);
+                return true;
+            case R.id.CurrentSort:
+                sort_sql = "_id";
+                sort_sql_asc = "desc";
+                sort(sort_sql, sort_sql_asc);
+                return true;
+            case R.id.TitleSort:
+                sort_sql = "title";
+                sort_sql_asc = "asc";
+                sort(sort_sql, sort_sql_asc);
+                return true;
+            case R.id.TitleReverseSort:
+                sort_sql = "title";
+                sort_sql_asc = "desc";
+                sort(sort_sql, sort_sql_asc);
+                return true;
+            case R.id.OldDateSort:
+                sort_sql = "date";
+                sort_sql_asc = "desc";
+                sort(sort_sql, sort_sql_asc);
+                return true;
+            case R.id.CurrentDateSort:
+                sort_sql = "date";
+                sort_sql_asc = "asc";
+                sort(sort_sql, sort_sql_asc);
+                return true;
+        }
+        return super.onContextItemSelected(item);
     }
 
     class ScheduleAdapter extends BaseAdapter {
@@ -197,7 +255,8 @@ public class Schedule_Main_Fragment extends Fragment {
             }
         }
         else{   // 문자 입력 시
-            data = database.selectData("schedule_table", "select * from schedule_table where title like \"%"+s_text+"%\""); // DB에서 검색 데이터 가져오기
+            data = database.selectData("schedule_table", "select * from schedule_table where title like \"%"+s_text+"%\""
+                                                                        +" order by "+sort_sql+" "+sort_sql_asc+""); // DB에서 검색 데이터 가져오기
             for(String[] item : data) { // Db에서 가져온 데이터로 Phone_item 객체 만들어 어댑터에 등록
                 adapter.addItem(Schedule_Item.builder()
                         .name(item[0])
@@ -208,6 +267,22 @@ public class Schedule_Main_Fragment extends Fragment {
                         .Id(item[5])
                         .build());
             }
+        }
+        schedule_listView.setAdapter(adapter); // 리스트뷰에 세팅
+    }
+
+    public void sort(String col, String asc){
+        adapter.clearItem(); // 문자 입력할 때마다 다 지우고 새로 생성
+        data = database.selectData("schedule_table", "select * from schedule_table" + " order by "+col+" "+asc+""); // DB에서 전체 데이터 가져오기
+        for(String[] item : data) { // Db에서 가져온 데이터로 Phone_item 객체 만들어 어댑터에 등록
+            adapter.addItem(Schedule_Item.builder()
+                    .name(item[0])
+                    .date(item[1])
+                    .time(item[2])
+                    .place(item[3])
+                    .email(item[4])
+                    .Id(item[5])
+                    .build());
         }
         schedule_listView.setAdapter(adapter); // 리스트뷰에 세팅
     }
