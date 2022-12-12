@@ -1,11 +1,13 @@
 package com.example.term_project.phone;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,6 +24,7 @@ public class Phone_Input_Activity extends AppCompatActivity {
     EditText phone_email_edittext;
     ImageView phone_image;
     String imagePath;
+    Uri imageUri = Uri.parse("content://com.android.externalstorage.documents/document/primary%3ADCIM%2FCamera%");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +53,9 @@ public class Phone_Input_Activity extends AppCompatActivity {
         phone_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
+                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
                 intent.setType("image/*");
+                intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, imageUri);
                 startActivityForResult(intent, 1);
             }
         });
@@ -101,6 +105,7 @@ public class Phone_Input_Activity extends AppCompatActivity {
         });
 
     }
+    @SuppressLint("WrongConstant")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -109,6 +114,9 @@ public class Phone_Input_Activity extends AppCompatActivity {
             case 1:
                 if(resultCode == RESULT_OK) {
                     Uri uri = data.getData();
+                    int takeFlags = data.getFlags() & (Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                    ContentResolver resolver = this.getContentResolver();
+                    resolver.takePersistableUriPermission(uri, takeFlags);
                     phone_image.setImageURI(uri);
                     imagePath = uri.toString();
                 }
