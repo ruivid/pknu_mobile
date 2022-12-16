@@ -74,6 +74,6 @@ public class Phone_Item {
     public String getId() { return Id; }
 
     public String[] getDetail() {
-        return new String[]{this.name, this.phone_number, this.email, this.Id};
+        return new String[]{this.name, this.phone_number, this.email, this.Id, this.imagePath};
     }
 }

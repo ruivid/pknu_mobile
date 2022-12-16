@@ -45,9 +45,11 @@ public class Phone_Input_Activity extends AppCompatActivity {
             String name = detail[0];
             String phone_number = detail[1];
             String email = detail[2];
+            String imagePath = detail[4];
             phone_name_edittext.setText(name);
             phone_phonenumber_edittext.setText(phone_number);
             phone_email_edittext.setText(email);
+            phone_image.setImageURI(Uri.parse(imagePath));
         }
 
         phone_image.setOnClickListener(new View.OnClickListener() {
@@ -79,7 +81,8 @@ public class Phone_Input_Activity extends AppCompatActivity {
                     database.updateRecordParam("phone_table",
                             new String[]{phone_name_edittext.getText().toString(),
                                     phone_phonenumber_edittext.getText().toString(),
-                                    phone_email_edittext.getText().toString()},
+                                    phone_email_edittext.getText().toString(),
+                                    imagePath},
                                     new String[]{id});
                     finish();
                 }

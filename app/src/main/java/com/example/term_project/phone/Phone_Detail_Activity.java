@@ -18,6 +18,7 @@ public class Phone_Detail_Activity extends AppCompatActivity {
     TextView nameView;
     TextView phoneView;
     TextView emailView;
+    ImageView imageView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,14 +32,17 @@ public class Phone_Detail_Activity extends AppCompatActivity {
         String phone_number = detail[1];
         String email = detail[2];
         String id = detail[3];
+        String imagePath = detail[4];
 
         nameView = findViewById(R.id.phone_detail_name);
         phoneView = findViewById(R.id.phone_detail_phonenumber);
         emailView = findViewById(R.id.phone_detail_email);
+        imageView = findViewById(R.id.Selected_imageView);
 
         nameView.setText(name);
         phoneView.setText(phone_number);
         emailView.setText(email);
+        imageView.setImageURI(Uri.parse(imagePath));
 
         ImageView CallButton = (ImageView) findViewById(R.id.phone_detail_Call);
         CallButton.setOnClickListener(new View.OnClickListener() {
@@ -63,15 +67,6 @@ public class Phone_Detail_Activity extends AppCompatActivity {
         /*
             하단 버튼 터치 이벤트 (뒤로가기 버튼 / 편집 버튼 / 삭제 버튼)
          */
-        /* 이거 필요한지 의문이에요 // 뒤로가기 버튼
-        Button BackButton = (Button) findViewById(R.id.phone_detail_backbutton);
-        BackButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "뒤로가기 클릭", Toast.LENGTH_LONG).show();
-                finish();
-            }
-        });*/
 
         // 편집 버튼
         Button EditButton = (Button) findViewById(R.id.phone_detail_editbutton); //---------------------------
