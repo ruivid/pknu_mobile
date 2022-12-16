@@ -24,7 +24,7 @@ public class Phone_Input_Activity extends AppCompatActivity {
     EditText phone_email_edittext;
     ImageView phone_image;
     String imagePath;
-    Uri imageUri = Uri.parse("content://com.android.externalstorage.documents/document/primary%3ADCIM%2FCamera%");
+    Uri imageUri = Uri.parse("content://com.android.externalstorage.documents/document/primary%3APictures");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
