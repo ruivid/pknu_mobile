@@ -2,6 +2,7 @@ package com.example.term_project.schedule;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -109,7 +110,9 @@ public class Schedule_Main_Fragment extends Fragment {
             @Override
             public void onClick(View view) {
                 registerForContextMenu(view);
-                view.showContextMenu(view.getX(), view.getY()+view.getHeight());
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) { // API 레벨 24 이상에서만 동작
+                    view.showContextMenu(view.getX(), view.getY()+view.getHeight());
+                }
                 //getActivity().openContextMenu(view);  // 팝업창으로 띄우는 방법
                 unregisterForContextMenu(view);
             }

@@ -2,6 +2,7 @@ package com.example.term_project.phone;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -105,7 +106,9 @@ public class Phone_Main_Fragment extends Fragment {
             @Override
             public void onClick(View view) {
                 registerForContextMenu(view);
-                view.showContextMenu(view.getX(), view.getY()+view.getHeight());
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) { // API 레벨 24 이상에서만 동작
+                    view.showContextMenu(view.getX(), view.getY()+view.getHeight());
+                }
                 //getActivity().openContextMenu(view);
                 unregisterForContextMenu(view);
             }
