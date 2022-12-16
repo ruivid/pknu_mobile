@@ -1,13 +1,16 @@
 package com.example.term_project.schedule;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.text.Editable;
+import android.text.SpannableString;
 import android.text.TextWatcher;
+import android.text.style.ForegroundColorSpan;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -42,6 +45,9 @@ public class Schedule_Main_Fragment extends Fragment {
 
     String sort_sql = "_id";
     String sort_sql_asc = "asc";
+
+    ContextMenu tmpMenu;
+    int selectedItemOrder = -1;
 
     public Schedule_Main_Fragment() {
         // Required empty public constructor
@@ -163,6 +169,10 @@ public class Schedule_Main_Fragment extends Fragment {
         super.onCreateContextMenu(menu, v, menuInfo);
         MenuInflater inflater = getActivity().getMenuInflater();
         inflater.inflate(R.menu.sort_menu_schedule, menu);
+        tmpMenu = menu; // 외부에서도 ContextMenu를 쓰기위해 임시변수에 menu 삽입
+        if (selectedItemOrder != -1) {  // 초기 메뉴 오픈은 제외, 메뉴가 선택되었을 때만
+            itemChangeColor(menu, selectedItemOrder, false);
+        }
     }
 
     public boolean onContextItemSelected(MenuItem item)
@@ -173,31 +183,43 @@ public class Schedule_Main_Fragment extends Fragment {
                 sort_sql = "_id";
                 sort_sql_asc = "asc";
                 sort(sort_sql, sort_sql_asc);
+                selectedItemOrder = 0;          // 선택한 메뉴 항목 순서 = 0
+                itemChangeColor(tmpMenu, selectedItemOrder, true);
                 return true;
             case R.id.CurrentSort:
                 sort_sql = "_id";
                 sort_sql_asc = "desc";
                 sort(sort_sql, sort_sql_asc);
+                selectedItemOrder = 1;          // 선택한 메뉴 항목 순서 = 1
+                itemChangeColor(tmpMenu, selectedItemOrder, true);
                 return true;
             case R.id.TitleSort:
                 sort_sql = "title";
                 sort_sql_asc = "asc";
                 sort(sort_sql, sort_sql_asc);
+                selectedItemOrder = 2;          // 선택한 메뉴 항목 순서 = 2
+                itemChangeColor(tmpMenu, selectedItemOrder, true);
                 return true;
             case R.id.TitleReverseSort:
                 sort_sql = "title";
                 sort_sql_asc = "desc";
                 sort(sort_sql, sort_sql_asc);
+                selectedItemOrder = 3;          // 선택한 메뉴 항목 순서 = 3
+                itemChangeColor(tmpMenu, selectedItemOrder, true);
                 return true;
             case R.id.OldDateSort:
                 sort_sql = "date";
                 sort_sql_asc = "desc";
                 sort(sort_sql, sort_sql_asc);
+                selectedItemOrder = 4;          // 선택한 메뉴 항목 순서 = 4
+                itemChangeColor(tmpMenu, selectedItemOrder, true);
                 return true;
             case R.id.CurrentDateSort:
                 sort_sql = "date";
                 sort_sql_asc = "asc";
                 sort(sort_sql, sort_sql_asc);
+                selectedItemOrder = 5;          // 선택한 메뉴 항목 순서 = 5
+                itemChangeColor(tmpMenu, selectedItemOrder, true);
                 return true;
         }
         return super.onContextItemSelected(item);
@@ -285,6 +307,30 @@ public class Schedule_Main_Fragment extends Fragment {
                     .build());
         }
         schedule_listView.setAdapter(adapter); // 리스트뷰에 세팅
+    }
+
+    /**
+     * 메뉴 - 선택된 메뉴 항목를 표시해주기 위해 선택된 메뉴항목의 색 변경을 하는 함수
+     * @param menu       : 메뉴
+     * @param item_order : 선택한 메뉴 항목 순서
+     * @param selected   : True = 메뉴 선택 시 / False = 메뉴 오픈 시
+     */
+    public void itemChangeColor(ContextMenu menu, int item_order, boolean selected){
+        if(selected) {  // 메뉴 항목 선택시 항목색 초기화
+            for (int i = 0; i < menu.size(); i++) {
+                MenuItem AllItem = menu.getItem(i);
+                SpannableString spanString = new SpannableString(menu.getItem(i).getTitle().toString());
+                spanString.setSpan(new ForegroundColorSpan(Color.BLACK), 0, spanString.length(), 0); //fix the color to white
+                AllItem.setTitle(spanString);
+            }
+        }
+        /** 선택한 메뉴 색 변경
+         *  Item = 선택된 메뉴 항목
+         */
+        MenuItem Item = menu.getItem(item_order);
+        SpannableString spanString = new SpannableString(menu.getItem(item_order).getTitle().toString());
+        spanString.setSpan(new ForegroundColorSpan(Color.BLUE), 0, spanString.length(), 0); //fix the color to white
+        Item.setTitle(spanString);
     }
 
 }
